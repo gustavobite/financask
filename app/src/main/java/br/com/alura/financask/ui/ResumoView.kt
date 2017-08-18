@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import br.com.alura.financask.R
 import br.com.alura.financask.model.Resumo
-import br.com.alura.financask.util.MoedaUtil
+import br.com.alura.financask.util.formataParaBrasileiro
 import java.math.BigDecimal
 
 /**
@@ -25,14 +25,14 @@ class ResumoView(private val context: Context, private val viewRoot: ViewGroup) 
         campoReceita.setTextColor(ContextCompat.getColor(context, corReceita))
         campoDespesa.setTextColor(ContextCompat.getColor(context, corDespesa))
 
-        campoReceita.setText(MoedaUtil.formataParaBrasileiro(resumo.despesa))
-        campoDespesa.setText(MoedaUtil.formataParaBrasileiro(resumo.despesa))
+        campoReceita.setText(resumo.receita.formataParaBrasileiro())
+        campoDespesa.setText(resumo.despesa.formataParaBrasileiro())
 
         val total = resumo.total
         if (total.compareTo(BigDecimal.ZERO) >= 0)
             campoTotal.setTextColor(ContextCompat.getColor(context, corReceita))
         else
             campoTotal.setTextColor(ContextCompat.getColor(context, corDespesa))
-        campoTotal.setText(MoedaUtil.formataParaBrasileiro(total))
+        campoTotal.setText(total.formataParaBrasileiro())
     }
 }

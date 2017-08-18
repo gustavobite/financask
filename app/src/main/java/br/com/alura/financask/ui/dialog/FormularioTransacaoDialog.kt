@@ -7,15 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import br.com.alura.financask.R
 import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Tipo.RECEITA
 import br.com.alura.financask.model.Transacao
-import br.com.alura.financask.util.DataUtil
-import br.com.alura.financask.util.MoedaUtil
+import br.com.alura.financask.util.converte
+import br.com.alura.financask.util.formataParaBrasileiro
+import br.com.alura.financask.util.validaMoeda
+import java.math.BigDecimal
 import java.text.ParseException
 import java.util.*
 
@@ -59,15 +61,13 @@ open abstract class FormularioTransacaoDialog(protected var context: Context, vi
     }
 
     private fun configuraSpinner(tipo: Tipo) {
-        var categorias = R.array.categorias_de_despesa
-
-        if (tipo == RECEITA) {
-            categorias = R.array.categorias_de_receita
+        var categorias = if (tipo == RECEITA) {
+            R.array.categorias_de_despesa
+        } else {
+            R.array.categorias_de_receita
         }
-
         val adapter = ArrayAdapter.createFromResource(context,
                 categorias, android.R.layout.simple_spinner_item)
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categoria.adapter = adapter
     }
@@ -75,18 +75,20 @@ open abstract class FormularioTransacaoDialog(protected var context: Context, vi
     private fun devolveTransacao(tipo: Tipo): Transacao {
         val categoria = this.categoria.selectedItem.toString()
         val valor = this.valor.text.toString()
-        val data = this.data.text.toString()
+        val dataEmTexto = this.data.text.toString()
 
-        var calendar: Calendar = try {
-            DataUtil.converte(data)
+        val calendar = Calendar.getInstance()
+
+        val data: Calendar = try {
+            calendar.converte(dataEmTexto)
         } catch (e: ParseException) {
             Toast.makeText(context, "Falha ao inserir uma data", Toast.LENGTH_SHORT)
             e.printStackTrace()
-            Calendar.getInstance()
+            calendar
         }
 
-        val valorReal = MoedaUtil.validaMoeda(valor)
-        return Transacao(valor = valorReal, tipo = tipo, data = calendar, categoria = categoria)
+        val valorReal = BigDecimal.ZERO.validaMoeda(valor)
+        return Transacao(valor = valorReal, tipo = tipo, data = data, categoria = categoria)
     }
 
     private fun adicionaCalendario() {
@@ -94,17 +96,22 @@ open abstract class FormularioTransacaoDialog(protected var context: Context, vi
     }
 
     private fun chamaDatePicker(calendar: Calendar) {
+        val (year, month, day) = preencheCampos(calendar)
+        DatePickerDialog(context, configuraDatePicker(), year, month, day).show()
+    }
+
+    private fun preencheCampos(calendar: Calendar): Triple<Int, Int, Int> {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(context, configuraDatePicker(), year, month, day).show()
+        return Triple(year, month, day)
     }
 
     private fun configuraDatePicker(): DatePickerDialog.OnDateSetListener {
         return DatePickerDialog.OnDateSetListener { datePicker, ano, mes, dia ->
             val calendar = Calendar.getInstance()
             calendar.set(ano, mes, dia)
-            val formatoBrasileiro = DataUtil.formataParaBrasileiro(calendar)
+            val formatoBrasileiro = calendar.formataParaBrasileiro()
             data.setText(formatoBrasileiro)
         }
     }

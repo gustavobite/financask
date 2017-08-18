@@ -16,14 +16,18 @@ import java.util.*
  */
 
 class FiltroDialog(private val context: Context, viewRoot: ViewGroup) {
-    private val viewCriada: View
-    private val entradaMes: Spinner
-    private val entradaAno: Spinner
+
+    private val viewCriada: View by lazy {
+        LayoutInflater.from(context).inflate(R.layout.form_filtro_transacao, viewRoot, false)
+    }
+    private val entradaMes: Spinner by lazy {
+        viewCriada.findViewById<Spinner>(R.id.form_filtro_transacao_mes)
+    }
+    private val entradaAno: Spinner by lazy {
+        viewCriada.findViewById<Spinner>(R.id.form_filtro_transacao_ano)
+    }
 
     init {
-        this.viewCriada = LayoutInflater.from(context).inflate(R.layout.form_filtro_transacao, viewRoot, false)
-        this.entradaMes = viewCriada.findViewById(R.id.form_filtro_transacao_mes)
-        this.entradaAno = viewCriada.findViewById(R.id.form_filtro_transacao_ano)
         adicionaMeses()
         adicionaAnos()
     }
@@ -32,14 +36,14 @@ class FiltroDialog(private val context: Context, viewRoot: ViewGroup) {
         val dialog = AlertDialog.Builder(context)
                 .setTitle("Filtro")
                 .setView(viewCriada)
-                .setPositiveButton("Filtrar") { dialogInterface, i ->
+                .setPositiveButton("Filtrar") { _, _ ->
                     val posicaoDoMes = entradaMes.selectedItemPosition
                     val ano = entradaAno.selectedItem as String
                     val dataDevolvida = Calendar.getInstance()
                     dataDevolvida.set(Calendar.YEAR, Integer.parseInt(ano))
                     dataDevolvida.set(Calendar.MONTH, posicaoDoMes)
                     delegate(dataDevolvida)
-                }.setNegativeButton("Limpar filtro") { dialogInterface, i -> limpaFiltro() }.create()
+                }.setNegativeButton("Limpar filtro") { _, _ -> limpaFiltro() }.create()
         configuraCorDoBotaoPositivo(dialog)
         dialog.show()
     }
@@ -67,7 +71,9 @@ class FiltroDialog(private val context: Context, viewRoot: ViewGroup) {
     }
 
     private fun configuraCorDoBotaoPositivo(dialog: AlertDialog) {
-        dialog.setOnShowListener { dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary)) }
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
+        }
     }
 
 }

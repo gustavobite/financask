@@ -1,6 +1,6 @@
 package br.com.alura.financask.model
 
-import br.com.alura.financask.util.DataUtil
+import br.com.alura.financask.util.formataParaBrasileiro
 import java.math.BigDecimal
 import java.util.*
 
@@ -13,7 +13,10 @@ data class Transacao(val valor: BigDecimal,
         val INDEFINIDA = "Indefinida"
     }
 
-    fun valorFormatado(): BigDecimal = valor.setScale(2, BigDecimal.ROUND_HALF_EVEN)
+    val valorFormatado: BigDecimal get() = valor.setScale(2, BigDecimal.ROUND_HALF_EVEN)
 
-    fun dataFormatada(): String = DataUtil.formataParaBrasileiro(data)
+    val dataFormatada: String get() = data.formataParaBrasileiro()
+
 }
+
+

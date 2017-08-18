@@ -4,30 +4,23 @@ import br.com.alura.financask.model.Transacao
 
 class TransacaoDAO {
 
-    val transacoes: MutableList<Transacao>
-        get() = TRANSACOES
+    val transacoes: List<Transacao> get() = Companion.transacoes
 
     fun adiciona(vararg transacoes: Transacao) {
         for (transacao in transacoes) {
-            TRANSACOES.add(transacao)
-        }
-    }
-
-    fun adiciona(transacoes: List<Transacao>) {
-        for (transacao in transacoes) {
-            TRANSACOES.add(transacao)
+            Companion.transacoes.add(transacao)
         }
     }
 
     fun remove(position: Int) {
-        TRANSACOES.removeAt(position)
+        Companion.transacoes.removeAt(position)
     }
 
     fun altera(transacao: Transacao, position: Int) {
-        TRANSACOES[position] = transacao
+        Companion.transacoes[position] = transacao
     }
 
     companion object {
-        private val TRANSACOES = mutableListOf<Transacao>()
+        private val transacoes = mutableListOf<Transacao>()
     }
 }

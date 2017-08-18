@@ -1,7 +1,6 @@
 package br.com.alura.financask.ui.adapter
 
 import android.content.Context
-
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +9,13 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import br.com.alura.financask.R
-
 import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Transacao
-import br.com.alura.financask.util.MoedaUtil
+import br.com.alura.financask.util.formataParaBrasileiro
+
 class ListaTransacaoAdapter(private val context: Context, private val transacoes: List<Transacao>) : BaseAdapter() {
 
-    companion object {
-        val LIMITE_DE_CATEGORIA = 14
-    }
+    private val LIMITE_DE_CATEGORIA = 14
 
     override fun getCount(): Int {
         return transacoes.size
@@ -32,9 +29,8 @@ class ListaTransacaoAdapter(private val context: Context, private val transacoes
         return 0
     }
 
-    override fun getView(position: Int, view: View, viewGroup: ViewGroup): View {
-        var view = view
-        view = LayoutInflater.from(context).inflate(R.layout.transacao_item, viewGroup, false)
+    override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.transacao_item, viewGroup, false)
 
         val transacao = transacoes[position]
 
@@ -62,7 +58,7 @@ class ListaTransacaoAdapter(private val context: Context, private val transacoes
     }
 
     private fun adicionaData(transacao: Transacao, campoData: TextView) {
-        campoData.setText(transacao.dataFormatada())
+        campoData.setText(transacao.dataFormatada)
     }
 
     private fun adicionaValor(transacao: Transacao, campoValor: TextView) {
@@ -71,7 +67,7 @@ class ListaTransacaoAdapter(private val context: Context, private val transacoes
         } else {
             campoValor.setTextColor(ContextCompat.getColor(context, R.color.despesa))
         }
-        campoValor.setText(MoedaUtil.formataParaBrasileiro(transacao.valor))
+        campoValor.setText(transacao.valor.formataParaBrasileiro())
     }
 
     private fun ehTransacaoDeReceita(transacao: Transacao): Boolean {

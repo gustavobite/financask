@@ -25,7 +25,7 @@ import java.util.*
 
 class ListaTransacoesActivity : AppCompatActivity() {
 
-    private lateinit var transacoes: MutableList<Transacao>
+    private lateinit var transacoes: List<Transacao>
     private lateinit var viewRoot: ViewGroup
     private lateinit var resumoView: ResumoView
     private lateinit var adapter: ListaTransacaoAdapter
@@ -64,7 +64,6 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
         lista_transacoes_listview.onItemClickListener = AdapterView.OnItemClickListener { _, _, posicao, _ ->
             val transacaoDevolvida = transacoes[posicao]
-
             AlteraTransacaoDialog(this@ListaTransacoesActivity, viewRoot)
                     .mostraFormulario(transacaoDevolvida, {
                         alteraTransacao(it, posicao)
@@ -98,13 +97,14 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun transacoesFiltradas(data: Calendar, transacoesSalvas: List<Transacao>): MutableList<Transacao> {
-        val transacoesFiltradas = mutableListOf<Transacao>()
-        for (transacao in transacoesSalvas) {
-            val dataDaTransacao = transacao.data
-            if (saoIguais(data, dataDaTransacao)) {
-                transacoesFiltradas.add(transacao)
-            }
-        }
+//        val transacoesFiltradas = mutableListOf<Transacao>()
+//        for (transacao in transacoesSalvas) {
+//            val dataDaTransacao = transacao.data
+//            if (saoIguais(data, dataDaTransacao)) {
+//                transacoesFiltradas.add(transacao)
+//            }
+//        }
+        val transacoesFiltradas = transacoesSalvas.filter { saoIguais(it.data, data) }.toMutableList()
         return transacoesFiltradas
     }
 
@@ -129,7 +129,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun atualizaResumo() {
-        val resumo = Resumo(transacoes)
+        val resumo = Resumo(transacoes.toMutableList())
         resumoView.atualiza(resumo)
     }
 

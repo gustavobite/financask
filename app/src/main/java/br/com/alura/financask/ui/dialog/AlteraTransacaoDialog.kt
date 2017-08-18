@@ -30,8 +30,8 @@ class AlteraTransacaoDialog(context: Context, viewRoot: ViewGroup) : FormularioT
 
     private fun adicionaValoresPadrao(transacao: Transacao, categorias: Array<String>) {
         val posicaoPadraoCategoria = devolvePosicaoDaCategoria(transacao, categorias)
-        valor.setText(transacao.valorFormatado().toString())
-        data.setText(transacao.dataFormatada())
+        valor.setText(transacao.valorFormatado.toString())
+        data.setText(transacao.dataFormatada)
         categoria.setSelection(posicaoPadraoCategoria)
     }
 

@@ -17,7 +17,7 @@ class ResumoTest {
         val resumoDeTransacoes = Resumo()
         val receita = Transacao(BigDecimal(100.0), RECEITA)
         resumoDeTransacoes.adiciona(receita)
-        val transacaoDevolvida = resumoDeTransacoes.getTransacoes()[0]
+        val transacaoDevolvida = resumoDeTransacoes.transacoes[0]
 
         val valor = transacaoDevolvida.valor
         assertEquals(BigDecimal(100.0), valor)
@@ -33,7 +33,7 @@ class ResumoTest {
         val resumoDeTransacoes = Resumo()
         val despesa = Transacao(BigDecimal(100.0), DESPESA)
         resumoDeTransacoes.adiciona(despesa)
-        val transacaoDevolvida = resumoDeTransacoes.getTransacoes()[0]
+        val transacaoDevolvida = resumoDeTransacoes.transacoes[0]
 
         val valor = transacaoDevolvida.valor
         assertEquals(BigDecimal(100.0), valor)
@@ -48,7 +48,7 @@ class ResumoTest {
     fun adicionaTransacoes() {
         val resumoDeTransacoes = Resumo()
         resumoDeTransacoes.adiciona(transacoesDeExemplo)
-        val transacoesDevolvidas = resumoDeTransacoes.getTransacoes()
+        val transacoesDevolvidas = resumoDeTransacoes.transacoes
         val totalTransacoes = transacoesDevolvidas.size
         assertEquals(10, totalTransacoes.toLong())
     }
