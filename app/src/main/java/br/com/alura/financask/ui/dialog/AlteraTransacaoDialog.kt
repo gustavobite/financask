@@ -15,17 +15,33 @@ class AlteraTransacaoDialog(context: Context, viewRoot: ViewGroup) : FormularioT
 
     fun mostraFormulario(transacao: Transacao, delegate: (Transacao) -> Unit) {
         val tipo = transacao.tipo
-
-        var titulo = "Alterar despesa"
-        var categorias = context.resources.getStringArray(R.array.categorias_de_despesa)
-        if (tipo.equals(Tipo.RECEITA)) {
-            titulo = "Alterar receita"
-            categorias = context.resources.getStringArray(R.array.categorias_de_receita)
-        }
+        val (titulo, categorias) = inicializaPor(tipo)
 
         adicionaValoresPadrao(transacao, categorias)
 
         mostraDialog(tipo, delegate, titulo, "Alterar", "Cancelar")
+    }
+
+    private fun inicializaPor(tipo: Tipo): Pair<String, Array<String>> {
+        val categorias = devolveCategoria(tipo)
+        val titulo = devolveTituo(tipo)
+        return Pair(titulo, categorias)
+    }
+
+    private fun devolveCategoria(tipo: Tipo): Array<String> {
+        return if (tipo.equals(Tipo.RECEITA)) {
+            context.resources.getStringArray(R.array.categorias_de_receita)
+        } else {
+            context.resources.getStringArray(R.array.categorias_de_despesa)
+        }
+    }
+
+    private fun devolveTituo(tipo: Tipo): String {
+        return if (tipo.equals(Tipo.RECEITA)) {
+            "Alterar receita"
+        } else {
+            "Alterar despesa"
+        }
     }
 
     private fun adicionaValoresPadrao(transacao: Transacao, categorias: Array<String>) {
