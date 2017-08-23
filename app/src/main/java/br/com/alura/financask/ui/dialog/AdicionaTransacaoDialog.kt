@@ -17,13 +17,13 @@ class AdicionaTransacaoDialog(context: Context, viewRoot: ViewGroup) : Formulari
 
     fun mostraFormulario(tipo: Tipo, delegate: (Transacao) -> Unit) {
 
-        var titulo = devolveTipo(tipo)
+        var titulo = devolveTitulo(tipo)
 
         adicionaValoresPadrao()
         mostraDialog(tipo, delegate, titulo, "Adicionar", "Cancelar")
     }
 
-    private fun devolveTipo(tipo: Tipo): String {
+    private fun devolveTitulo(tipo: Tipo): String {
         return if (tipo.equals(Tipo.RECEITA)) {
             "Adicionar receita"
         } else {

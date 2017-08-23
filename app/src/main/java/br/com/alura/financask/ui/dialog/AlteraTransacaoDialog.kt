@@ -36,13 +36,12 @@ class AlteraTransacaoDialog(context: Context, viewRoot: ViewGroup) : FormularioT
     }
 
     protected fun devolvePosicaoDaCategoria(transacao: Transacao, categorias: Array<String>): Int {
-        val primeiroItem = 0
         for (i in categorias.indices) {
             val categoria = categorias[i]
             if (categoria == transacao.categoria) {
                 return i
             }
         }
-        return primeiroItem
+        return 0
     }
 }
