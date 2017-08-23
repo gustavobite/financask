@@ -15,24 +15,29 @@ import java.math.BigDecimal
 
 class ResumoView(private val context: Context, private val viewRoot: ViewGroup) {
 
+    val corReceita = ContextCompat.getColor(context, R.color.receita)
+    val corDespesa = ContextCompat.getColor(context, R.color.despesa)
+
     fun atualiza(resumo: Resumo) {
-        val campoTotal = viewRoot.findViewById<TextView>(R.id.resumo_card_total)
         val campoReceita = viewRoot.findViewById<TextView>(R.id.resumo_card_receita)
+        campoReceita.text = resumo.receita.formataParaBrasileiro()
+        campoReceita.setTextColor(corReceita)
+
         val campoDespesa = viewRoot.findViewById<TextView>(R.id.resumo_card_despesa)
+        campoDespesa.text = resumo.despesa.formataParaBrasileiro()
+        campoDespesa.setTextColor(corDespesa)
 
-        val corReceita = R.color.receita
-        val corDespesa = R.color.despesa
-        campoReceita.setTextColor(ContextCompat.getColor(context, corReceita))
-        campoDespesa.setTextColor(ContextCompat.getColor(context, corDespesa))
-
-        campoReceita.setText(resumo.receita.formataParaBrasileiro())
-        campoDespesa.setText(resumo.despesa.formataParaBrasileiro())
-
+        val campoTotal = viewRoot.findViewById<TextView>(R.id.resumo_card_total)
         val total = resumo.total
-        if (total.compareTo(BigDecimal.ZERO) >= 0)
-            campoTotal.setTextColor(ContextCompat.getColor(context, corReceita))
-        else
-            campoTotal.setTextColor(ContextCompat.getColor(context, corDespesa))
-        campoTotal.setText(total.formataParaBrasileiro())
+        campoTotal.text = total.formataParaBrasileiro()
+        campoTotal.setTextColor(devolveCorPor(total))
+    }
+
+    private fun devolveCorPor(total: BigDecimal): Int {
+        return if (total.compareTo(BigDecimal.ZERO) >= 0) {
+            corReceita
+        } else {
+            corDespesa
+        }
     }
 }

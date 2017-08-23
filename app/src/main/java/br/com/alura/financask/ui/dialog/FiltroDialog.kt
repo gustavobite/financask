@@ -43,7 +43,9 @@ class FiltroDialog(private val context: Context, viewRoot: ViewGroup) {
                     dataDevolvida.set(Calendar.YEAR, Integer.parseInt(ano))
                     dataDevolvida.set(Calendar.MONTH, posicaoDoMes)
                     delegate(dataDevolvida)
-                }.setNegativeButton("Limpar filtro") { _, _ -> limpaFiltro() }.create()
+                }.setNegativeButton("Limpar filtro") { _, _ ->
+                    limpaFiltro()
+                }.create()
         configuraCorDoBotaoPositivo(dialog)
         dialog.show()
     }

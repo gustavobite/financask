@@ -54,45 +54,53 @@ open abstract class FormularioTransacaoDialog(protected var context: Context, vi
                 .setTitle(titulo)
                 .setView(viewCriada)
                 .setPositiveButton(tituloPositivo) { _, _ ->
-                    val transacaoDevolvida = devolveTransacao(tipo)
+                    val transacaoDevolvida = devolvePor(tipo)
                     delegate(transacaoDevolvida)
                 }
                 .setNegativeButton(tituloNegativo, null).show()
     }
 
     private fun configuraSpinner(tipo: Tipo) {
-        var categorias = if (tipo == RECEITA) {
-            R.array.categorias_de_despesa
-        } else {
-            R.array.categorias_de_receita
-        }
+        var categorias = devolveCategorias(tipo)
         val adapter = ArrayAdapter.createFromResource(context,
                 categorias, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categoria.adapter = adapter
     }
 
-    private fun devolveTransacao(tipo: Tipo): Transacao {
+    private fun devolveCategorias(tipo: Tipo): Int {
+        return if (tipo == RECEITA) {
+            R.array.categorias_de_despesa
+        } else {
+            R.array.categorias_de_receita
+        }
+    }
+
+    private fun devolvePor(tipo: Tipo): Transacao {
         val categoria = this.categoria.selectedItem.toString()
         val valor = this.valor.text.toString()
         val dataEmTexto = this.data.text.toString()
-
-        val calendar = Calendar.getInstance()
-
-        val data: Calendar = try {
-            calendar.converte(dataEmTexto)
-        } catch (e: ParseException) {
-            Toast.makeText(context, "Falha ao inserir uma data", Toast.LENGTH_SHORT)
-            e.printStackTrace()
-            calendar
-        }
+        val data: Calendar = devolveData(dataEmTexto)
 
         val valorReal = BigDecimal.ZERO.validaMoeda(valor)
         return Transacao(valor = valorReal, tipo = tipo, data = data, categoria = categoria)
     }
 
+    private fun devolveData(dataEmTexto: String): Calendar {
+        val calendar = Calendar.getInstance()
+        return try {
+            calendar.converte(dataEmTexto)
+        } catch (e: ParseException) {
+            Toast.makeText(context, "Falha ao inserir data especificada", Toast.LENGTH_SHORT)
+            e.printStackTrace()
+            calendar
+        }
+    }
+
     private fun adicionaCalendario() {
-        data.setOnClickListener { chamaDatePicker(Calendar.getInstance()) }
+        data.setOnClickListener {
+            chamaDatePicker(Calendar.getInstance())
+        }
     }
 
     private fun chamaDatePicker(calendar: Calendar) {

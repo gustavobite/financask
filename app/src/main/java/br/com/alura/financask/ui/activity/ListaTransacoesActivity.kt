@@ -50,7 +50,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
         fab.setOnClickListener({
             AdicionaTransacaoDialog(this@ListaTransacoesActivity, viewRoot)
                     .mostraFormulario(tipo, {
-                        adicionaTransacao(it)
+                        atualiza(it)
                     })
             lista_transacoes_adiciona_menu.close(true)
         })
@@ -62,13 +62,14 @@ class ListaTransacoesActivity : AppCompatActivity() {
             contextMenu.add(Menu.NONE, 1, Menu.NONE, "Remover")
         }
 
-        lista_transacoes_listview.onItemClickListener = AdapterView.OnItemClickListener { _, _, posicao, _ ->
-            val transacaoDevolvida = transacoes[posicao]
-            AlteraTransacaoDialog(this@ListaTransacoesActivity, viewRoot)
-                    .mostraFormulario(transacaoDevolvida, {
-                        alteraTransacao(it, posicao)
-                    })
-        }
+        lista_transacoes_listview.onItemClickListener =
+                AdapterView.OnItemClickListener { _, _, posicao, _ ->
+                    val transacaoDevolvida = transacoes[posicao]
+                    AlteraTransacaoDialog(this@ListaTransacoesActivity, viewRoot)
+                            .mostraFormulario(transacaoDevolvida, {
+                                altera(it, posicao)
+                            })
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -104,7 +105,9 @@ class ListaTransacoesActivity : AppCompatActivity() {
 //                transacoesFiltradas.add(transacao)
 //            }
 //        }
-        val transacoesFiltradas = transacoesSalvas.filter { saoIguais(it.data, data) }.toMutableList()
+        val transacoesFiltradas = transacoesSalvas.filter {
+            saoIguais(it.data, data)
+        }.toMutableList()
         return transacoesFiltradas
     }
 
@@ -112,7 +115,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
         val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
         val position = menuInfo.position
         if (item.itemId == 1) {
-            removeTransacao(position)
+            remove(position)
         }
         return super.onContextItemSelected(item)
     }
@@ -133,17 +136,17 @@ class ListaTransacoesActivity : AppCompatActivity() {
         resumoView.atualiza(resumo)
     }
 
-    private fun adicionaTransacao(transacao: Transacao) {
+    private fun atualiza(transacao: Transacao) {
         TransacaoDAO().adiciona(transacao)
         atualizaTransacoes()
     }
 
-    private fun removeTransacao(position: Int) {
+    private fun remove(position: Int) {
         TransacaoDAO().remove(position)
         atualizaTransacoes()
     }
 
-    private fun alteraTransacao(transacao: Transacao, posicao: Int) {
+    private fun altera(transacao: Transacao, posicao: Int) {
         TransacaoDAO().altera(transacao, posicao)
         atualizaTransacoes()
     }

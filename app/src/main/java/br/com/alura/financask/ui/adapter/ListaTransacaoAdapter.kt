@@ -13,7 +13,8 @@ import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.util.formataParaBrasileiro
 
-class ListaTransacaoAdapter(private val context: Context, private val transacoes: List<Transacao>) : BaseAdapter() {
+class ListaTransacaoAdapter(private val context: Context,
+                            private val transacoes: List<Transacao>) : BaseAdapter() {
 
     private val LIMITE_DE_CATEGORIA = 14
 
@@ -30,7 +31,8 @@ class ListaTransacaoAdapter(private val context: Context, private val transacoes
     }
 
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.transacao_item, viewGroup, false)
+        val view = LayoutInflater.from(context)
+                .inflate(R.layout.transacao_item, viewGroup, false)
 
         val transacao = transacoes[position]
 
@@ -58,7 +60,7 @@ class ListaTransacaoAdapter(private val context: Context, private val transacoes
     }
 
     private fun adicionaData(transacao: Transacao, campoData: TextView) {
-        campoData.setText(transacao.dataFormatada)
+        campoData.text = transacao.dataFormatada
     }
 
     private fun adicionaValor(transacao: Transacao, campoValor: TextView) {
@@ -67,7 +69,7 @@ class ListaTransacaoAdapter(private val context: Context, private val transacoes
         } else {
             campoValor.setTextColor(ContextCompat.getColor(context, R.color.despesa))
         }
-        campoValor.setText(transacao.valor.formataParaBrasileiro())
+        campoValor.text = transacao.valor.formataParaBrasileiro()
     }
 
     private fun ehTransacaoDeReceita(transacao: Transacao): Boolean {
@@ -78,6 +80,6 @@ class ListaTransacaoAdapter(private val context: Context, private val transacoes
         var categoria = transacao.categoria
         if (categoria.length > LIMITE_DE_CATEGORIA)
             categoria = categoria.substring(0, 14) + "..."
-        campoCategoria.setText(categoria)
+        campoCategoria.text = categoria
     }
 }

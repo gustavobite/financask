@@ -11,7 +11,9 @@ import java.util.Locale
 
 fun BigDecimal.formataParaBrasileiro(): String {
     val moeda = DecimalFormat.getCurrencyInstance(Locale("pt", "BR"))
-    return moeda.format(this).replace("R$", "R$ ").replace("-R$ ", "R$ -")
+    return moeda.format(this)
+            .replace("R$", "R$ ")
+            .replace("-R$ ", "R$ -")
 }
 
 fun BigDecimal.validaMoeda(valorEmTexto: String): BigDecimal {

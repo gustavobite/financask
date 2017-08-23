@@ -7,22 +7,24 @@ import java.math.BigDecimal
 
 class Resumo(val transacoes: MutableList<Transacao> = mutableListOf()) {
 
-    val receita: BigDecimal get() = somaTransacoesPorTipo(RECEITA)
+    val receita: BigDecimal get() = somaTipo(RECEITA)
 
-    val despesa: BigDecimal get() = somaTransacoesPorTipo(DESPESA)
+    val despesa: BigDecimal get() = somaTipo(DESPESA)
 
     val total: BigDecimal
         get() = receita.subtract(despesa).setScale(2, BigDecimal.ROUND_HALF_EVEN)
 
     fun adiciona(vararg transacoes: Transacao) {
-        transacoes.forEach { transacao -> this.transacoes.add(transacao) }
+        transacoes.forEach { transacao ->
+            this.transacoes.add(transacao)
+        }
     }
 
     fun adiciona(transacoes: List<Transacao>) {
         this.transacoes.addAll(transacoes)
     }
 
-    private fun somaTransacoesPorTipo(tipo: Tipo): BigDecimal {
+    private fun somaTipo(tipo: Tipo): BigDecimal {
 
 //        var totalDeGasto = BigDecimal(0.0)
 //
@@ -33,9 +35,12 @@ class Resumo(val transacoes: MutableList<Transacao> = mutableListOf()) {
 //            }
 //        }
         val totalDeGasto = BigDecimal(transacoes
-                .filter { it.tipo.equals(tipo) }
-                .sumByDouble { it.valor.toDouble() })
-
+                .filter {
+                    it.tipo.equals(tipo)
+                }
+                .sumByDouble {
+                    it.valor.toDouble()
+                })
         return totalDeGasto.setScale(2, BigDecimal.ROUND_HALF_EVEN)
     }
 
