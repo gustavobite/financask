@@ -18,10 +18,8 @@ import br.com.alura.financask.ui.ResumoView
 import br.com.alura.financask.ui.adapter.ListaTransacaoAdapter
 import br.com.alura.financask.ui.dialog.AdicionaTransacaoDialog
 import br.com.alura.financask.ui.dialog.AlteraTransacaoDialog
-import br.com.alura.financask.ui.dialog.FiltroDialog
 import com.github.clans.fab.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
-import java.util.*
 
 class ListaTransacoesActivity : AppCompatActivity() {
 
@@ -70,45 +68,6 @@ class ListaTransacoesActivity : AppCompatActivity() {
                                 altera(it, posicao)
                             })
                 }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val itemId = item.itemId
-        if (itemId == R.id.menu_principal_filtro) {
-            FiltroDialog(this, viewRoot).mostraFormulario({
-                val transacoesSalvas = TransacaoDAO().transacoes
-                val transacoesFiltradas = transacoesFiltradas(it, transacoesSalvas)
-                transacoes = transacoesFiltradas
-                configuraAdapter()
-            }, {
-                transacoes = TransacaoDAO().transacoes
-                configuraAdapter()
-            })
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun saoIguais(data: Calendar, dataDaTransacao: Calendar): Boolean {
-        return data.get(Calendar.MONTH) == dataDaTransacao.get(Calendar.MONTH) && data.get(Calendar.YEAR) == dataDaTransacao.get(Calendar.YEAR)
-    }
-
-    private fun transacoesFiltradas(data: Calendar, transacoesSalvas: List<Transacao>): MutableList<Transacao> {
-//        val transacoesFiltradas = mutableListOf<Transacao>()
-//        for (transacao in transacoesSalvas) {
-//            val dataDaTransacao = transacao.data
-//            if (saoIguais(data, dataDaTransacao)) {
-//                transacoesFiltradas.add(transacao)
-//            }
-//        }
-        val transacoesFiltradas = transacoesSalvas.filter {
-            saoIguais(it.data, data)
-        }.toMutableList()
-        return transacoesFiltradas
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
