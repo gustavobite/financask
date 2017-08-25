@@ -17,6 +17,7 @@ import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.util.converte
 import br.com.alura.financask.util.formataParaBrasileiro
 import br.com.alura.financask.util.validaMoeda
+import kotlinx.android.synthetic.main.form_transacao.view.*
 import java.math.BigDecimal
 import java.text.ParseException
 import java.util.*
@@ -31,13 +32,13 @@ open abstract class FormularioTransacaoDialog(protected var context: Context, vi
         LayoutInflater.from(context).inflate(R.layout.form_transacao, viewRoot, false)
     }
     protected val valor: EditText by lazy {
-        viewCriada.findViewById<EditText>(R.id.form_transacao_valor)
+        viewCriada.form_transacao_valor
     }
     protected val categoria: Spinner by lazy {
-        viewCriada.findViewById<Spinner>(R.id.form_transacao_categoria)
+        viewCriada.form_transacao_categoria
     }
     protected val data: EditText by lazy {
-        viewCriada.findViewById<EditText>(R.id.form_transacao_data)
+        viewCriada.form_transacao_data
     }
 
     init {

@@ -29,7 +29,7 @@ class AlteraTransacaoDialog(context: Context, viewRoot: ViewGroup) : FormularioT
     }
 
     private fun devolveCategoria(tipo: Tipo): Array<String> {
-        return if (tipo.equals(Tipo.RECEITA)) {
+        return if (tipo == Tipo.RECEITA) {
             context.resources.getStringArray(R.array.categorias_de_receita)
         } else {
             context.resources.getStringArray(R.array.categorias_de_despesa)
@@ -37,7 +37,7 @@ class AlteraTransacaoDialog(context: Context, viewRoot: ViewGroup) : FormularioT
     }
 
     private fun devolveTituo(tipo: Tipo): String {
-        return if (tipo.equals(Tipo.RECEITA)) {
+        return if (tipo == Tipo.RECEITA) {
             "Alterar receita"
         } else {
             "Alterar despesa"

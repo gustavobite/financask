@@ -36,7 +36,7 @@ class Resumo(val transacoes: MutableList<Transacao> = mutableListOf()) {
 //        }
         val totalDeGasto = BigDecimal(transacoes
                 .filter {
-                    it.tipo.equals(tipo)
+                    it.tipo == tipo
                 }
                 .sumByDouble {
                     it.valor.toDouble()

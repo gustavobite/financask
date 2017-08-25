@@ -12,6 +12,7 @@ import br.com.alura.financask.R
 import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.util.formataParaBrasileiro
+import kotlinx.android.synthetic.main.transacao_item.view.*
 
 class ListaTransacaoAdapter(private val context: Context,
                             private val transacoes: List<Transacao>) : BaseAdapter() {
@@ -31,24 +32,18 @@ class ListaTransacaoAdapter(private val context: Context,
     }
 
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
-        val view = LayoutInflater.from(context)
+        val viewCriada = LayoutInflater.from(context)
                 .inflate(R.layout.transacao_item, viewGroup, false)
 
-        val transacao = transacoes[position]
+        with(viewCriada) {
+            val transacao = transacoes[position]
+            adicionaCategoria(transacao, transacao_categoria)
+            adicionaData(transacao, transacao_data)
+            adicionaValor(transacao, transacao_valor)
+            adicionaIcone(transacao, transacao_icone)
+        }
 
-        val campoDescrico = view.findViewById<TextView>(R.id.transacao_categoria)
-        adicionaCategoria(transacao, campoDescrico)
-
-        val campoData = view.findViewById<TextView>(R.id.transacao_data)
-        adicionaData(transacao, campoData)
-
-        val campoValor = view.findViewById<TextView>(R.id.transacao_valor)
-        adicionaValor(transacao, campoValor)
-
-        val imagemDoIcone = view.findViewById<ImageView>(R.id.transacao_icone)
-        adicionaIcone(transacao, imagemDoIcone)
-
-        return view
+        return viewCriada
     }
 
     private fun adicionaIcone(transacao: Transacao, imageView: ImageView) {
@@ -73,7 +68,7 @@ class ListaTransacaoAdapter(private val context: Context,
     }
 
     private fun ehTransacaoDeReceita(transacao: Transacao): Boolean {
-        return transacao.tipo.equals(Tipo.RECEITA)
+        return transacao.tipo == Tipo.RECEITA
     }
 
     private fun adicionaCategoria(transacao: Transacao, campoCategoria: TextView) {

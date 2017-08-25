@@ -24,7 +24,7 @@ class AdicionaTransacaoDialog(context: Context, viewRoot: ViewGroup) : Formulari
     }
 
     private fun devolveTitulo(tipo: Tipo): String {
-        return if (tipo.equals(Tipo.RECEITA)) {
+        return if (tipo == Tipo.RECEITA) {
             "Adicionar receita"
         } else {
             "Adicionar despesa"
