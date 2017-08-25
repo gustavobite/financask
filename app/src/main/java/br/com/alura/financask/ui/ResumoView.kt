@@ -20,9 +20,11 @@ class ResumoView(context: Context, private val viewRoot: ViewGroup) {
     val corDespesa = ContextCompat.getColor(context, R.color.despesa)
 
     fun atualiza(resumo: Resumo) {
-        adicionaReceita(resumo, viewRoot.resumo_card_receita)
-        adicionaDespesa(resumo, viewRoot.resumo_card_despesa)
-        adicionaTotal(resumo, viewRoot.resumo_card_total)
+        with(viewRoot) {
+            adicionaReceita(resumo, resumo_card_receita)
+            adicionaDespesa(resumo, resumo_card_despesa)
+            adicionaTotal(resumo, resumo_card_total)
+        }
     }
 
     private fun adicionaTotal(resumo: Resumo, total: TextView) {
