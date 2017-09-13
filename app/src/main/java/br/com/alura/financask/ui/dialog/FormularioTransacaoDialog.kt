@@ -71,9 +71,9 @@ open abstract class FormularioTransacaoDialog(protected var context: Context, vi
 
     private fun devolveCategorias(tipo: Tipo): Int {
         return if (tipo == RECEITA) {
-            R.array.categorias_de_despesa
-        } else {
             R.array.categorias_de_receita
+        } else {
+            R.array.categorias_de_despesa
         }
     }
 
