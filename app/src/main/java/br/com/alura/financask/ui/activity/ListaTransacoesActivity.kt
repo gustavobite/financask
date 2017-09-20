@@ -33,7 +33,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
         view = window.decorView
         transacoes = TransacaoDAO().transacoes
         resumoView = ResumoView(this,
-                view, transacoes.toMutableList())
+                view)
         configuraListaTransacoes()
         configuraFabMenu()
     }
@@ -91,7 +91,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun atualizaResumo() {
-        resumoView.atualiza()
+        resumoView.atualiza(Resumo(transacoes.toMutableList()))
     }
 
     private fun atualiza(transacao: Transacao) {

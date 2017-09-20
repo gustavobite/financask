@@ -14,9 +14,8 @@ class ResumoTest {
 
     @Test
     fun adicionaReceita() {
-        val resumoDeTransacoes = Resumo()
         val receita = Transacao(BigDecimal(100.0), RECEITA)
-        resumoDeTransacoes.adiciona(receita)
+        val resumoDeTransacoes = Resumo(mutableListOf(receita))
         val transacaoDevolvida = resumoDeTransacoes.transacoes[0]
 
         val valor = transacaoDevolvida.valor
@@ -30,9 +29,8 @@ class ResumoTest {
 
     @Test
     fun adicionaDebito() {
-        val resumoDeTransacoes = Resumo()
         val despesa = Transacao(BigDecimal(100.0), DESPESA)
-        resumoDeTransacoes.adiciona(despesa)
+        val resumoDeTransacoes = Resumo(mutableListOf(despesa))
         val transacaoDevolvida = resumoDeTransacoes.transacoes[0]
 
         val valor = transacaoDevolvida.valor
@@ -46,8 +44,7 @@ class ResumoTest {
 
     @Test
     fun adicionaTransacoes() {
-        val resumoDeTransacoes = Resumo()
-        resumoDeTransacoes.adiciona(transacoesDeExemplo)
+        val resumoDeTransacoes = Resumo(transacoesDeExemplo)
         val transacoesDevolvidas = resumoDeTransacoes.transacoes
         val totalTransacoes = transacoesDevolvidas.size
         assertEquals(10, totalTransacoes.toLong())
@@ -55,8 +52,7 @@ class ResumoTest {
 
     @Test
     fun retornaTotalDoResumo() {
-        val ResumoDeTransacoes = Resumo()
-        ResumoDeTransacoes.adiciona(transacoesDeExemplo)
+        val ResumoDeTransacoes = Resumo(transacoesDeExemplo)
         val valorArredondadoEsperado = BigDecimal(234.57).setScale(2, BigDecimal.ROUND_HALF_EVEN)
         val receita = ResumoDeTransacoes.total
         assertEquals(valorArredondadoEsperado, receita)
@@ -64,8 +60,7 @@ class ResumoTest {
 
     @Test
     fun retornaTotalDeReceita() {
-        val resumoDeTransacoes = Resumo()
-        resumoDeTransacoes.adiciona(transacoesDeExemplo)
+        val resumoDeTransacoes = Resumo(transacoesDeExemplo)
         val valorArredondadoEsperado = BigDecimal(472.26).setScale(2, BigDecimal.ROUND_HALF_EVEN)
         val receita = resumoDeTransacoes.receita
         assertEquals(valorArredondadoEsperado, receita)
@@ -73,14 +68,13 @@ class ResumoTest {
 
     @Test
     fun retornaTotalDeGasto() {
-        val resumoDeTransacoes = Resumo()
-        resumoDeTransacoes.adiciona(transacoesDeExemplo)
+        val resumoDeTransacoes = Resumo(transacoesDeExemplo)
         val despesa = resumoDeTransacoes.despesa
         val valorArredondadoEsperado = BigDecimal(237.69).setScale(2, BigDecimal.ROUND_HALF_EVEN)
         assertEquals(valorArredondadoEsperado, despesa)
     }
 
-    private val transacoesDeExemplo: List<Transacao>
+    private val transacoesDeExemplo: MutableList<Transacao>
         get() = ArrayList(Arrays.asList(
                 Transacao(BigDecimal(120.0), DESPESA),
                 Transacao(BigDecimal(20.0), RECEITA),

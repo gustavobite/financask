@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import br.com.alura.financask.R
 import br.com.alura.financask.model.Resumo
-import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.util.formataParaBrasileiro
 import kotlinx.android.synthetic.main.resumo_card.view.*
 import java.math.BigDecimal
@@ -15,20 +14,18 @@ import java.math.BigDecimal
  */
 
 class ResumoView(context: Context,
-                 private val view: View,
-                 transacoes: MutableList<Transacao>) {
+                 private val view: View) {
 
-    private val resumo = Resumo(transacoes)
     private val corReceita = ContextCompat.getColor(context, R.color.receita)
     private val corDespesa = ContextCompat.getColor(context, R.color.despesa)
 
-    fun atualiza() {
-        adicionaReceita()
-        adicionaDespesa()
-        adicionaTotal()
+    fun atualiza(resumo: Resumo) {
+        adicionaReceita(resumo)
+        adicionaDespesa(resumo)
+        adicionaTotal(resumo)
     }
 
-    private fun adicionaTotal() {
+    private fun adicionaTotal(resumo: Resumo) {
         val valorTotal = resumo.total
         with(view.resumo_card_total) {
             text = valorTotal.formataParaBrasileiro()
@@ -36,7 +33,7 @@ class ResumoView(context: Context,
         }
     }
 
-    private fun adicionaDespesa() {
+    private fun adicionaDespesa(resumo: Resumo) {
         val totalDespesa = resumo.despesa
         with(view.resumo_card_despesa) {
             text = totalDespesa.formataParaBrasileiro()
@@ -44,7 +41,7 @@ class ResumoView(context: Context,
         }
     }
 
-    private fun adicionaReceita() {
+    private fun adicionaReceita(resumo: Resumo) {
         val totalReceita = resumo.receita
         with(view.resumo_card_receita) {
             text = totalReceita.formataParaBrasileiro()

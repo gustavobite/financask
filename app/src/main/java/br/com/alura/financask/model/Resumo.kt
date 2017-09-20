@@ -14,16 +14,6 @@ class Resumo(val transacoes: MutableList<Transacao> = mutableListOf()) {
     val total: BigDecimal
         get() = receita.subtract(despesa).setScale(2, BigDecimal.ROUND_HALF_EVEN)
 
-    fun adiciona(vararg transacoes: Transacao) {
-        transacoes.forEach { transacao ->
-            this.transacoes.add(transacao)
-        }
-    }
-
-    fun adiciona(transacoes: List<Transacao>) {
-        this.transacoes.addAll(transacoes)
-    }
-
     private fun somaTipo(tipo: Tipo): BigDecimal {
 
 //        var totalDeGasto = BigDecimal(0.0)
