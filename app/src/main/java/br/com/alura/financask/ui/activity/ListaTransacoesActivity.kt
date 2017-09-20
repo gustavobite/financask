@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import br.com.alura.financask.R
 import br.com.alura.financask.dao.TransacaoDAO
@@ -24,16 +23,17 @@ import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 class ListaTransacoesActivity : AppCompatActivity() {
 
     private lateinit var transacoes: List<Transacao>
-    private lateinit var viewRoot: ViewGroup
+    private lateinit var view: View
     private lateinit var resumoView: ResumoView
     private lateinit var adapter: ListaTransacaoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
-        viewRoot = findViewById<View>(android.R.id.content) as ViewGroup
+        view = window.decorView
         transacoes = TransacaoDAO().transacoes
-        resumoView = ResumoView(this, viewRoot)
+        resumoView = ResumoView(this,
+                view, transacoes.toMutableList())
         configuraListaTransacoes()
         configuraFabMenu()
     }
@@ -46,7 +46,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
     private fun configuraFab(tipo: Tipo, fab: FloatingActionButton) {
         fab.setOnClickListener({
-            AdicionaTransacaoDialog(this@ListaTransacoesActivity, viewRoot)
+            AdicionaTransacaoDialog(this@ListaTransacoesActivity, view)
                     .mostraFormulario(tipo, {
                         atualiza(it)
                     })
@@ -63,7 +63,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
         lista_transacoes_listview.onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, posicao, _ ->
                     val transacaoDevolvida = transacoes[posicao]
-                    AlteraTransacaoDialog(this@ListaTransacoesActivity, viewRoot)
+                    AlteraTransacaoDialog(this@ListaTransacoesActivity, view)
                             .mostraFormulario(transacaoDevolvida, {
                                 altera(it, posicao)
                             })
@@ -91,8 +91,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun atualizaResumo() {
-        val resumo = Resumo(transacoes.toMutableList())
-        resumoView.atualiza(resumo)
+        resumoView.atualiza()
     }
 
     private fun atualiza(transacao: Transacao) {

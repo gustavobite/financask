@@ -1,6 +1,7 @@
 package br.com.alura.financask.ui.dialog
 
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup
 
 import br.com.alura.financask.R
@@ -11,7 +12,7 @@ import br.com.alura.financask.model.Transacao
  * Created by alex on 16/08/17.
  */
 
-class AlteraTransacaoDialog(context: Context, viewRoot: ViewGroup) : FormularioTransacaoDialog(context, viewRoot) {
+class AlteraTransacaoDialog(context: Context, view: View) : FormularioTransacaoDialog(context, view) {
 
     fun mostraFormulario(transacao: Transacao, delegate: (Transacao) -> Unit) {
         val tipo = transacao.tipo

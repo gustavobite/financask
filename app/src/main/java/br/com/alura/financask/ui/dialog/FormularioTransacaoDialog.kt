@@ -26,10 +26,10 @@ import java.util.*
  * Created by alex on 16/08/17.
  */
 
-open abstract class FormularioTransacaoDialog(protected var context: Context, viewRoot: ViewGroup) {
+open abstract class FormularioTransacaoDialog(protected var context: Context, view: View) {
 
     private val viewCriada: View by lazy {
-        LayoutInflater.from(context).inflate(R.layout.form_transacao, viewRoot, false)
+        LayoutInflater.from(context).inflate(R.layout.form_transacao, view as ViewGroup, false)
     }
     protected val valor: EditText by lazy {
         viewCriada.form_transacao_valor

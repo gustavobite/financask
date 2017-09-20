@@ -2,10 +2,10 @@ package br.com.alura.financask.ui
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
-import android.view.ViewGroup
-import android.widget.TextView
+import android.view.View
 import br.com.alura.financask.R
 import br.com.alura.financask.model.Resumo
+import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.util.formataParaBrasileiro
 import kotlinx.android.synthetic.main.resumo_card.view.*
 import java.math.BigDecimal
@@ -14,46 +14,48 @@ import java.math.BigDecimal
  * Created by alex on 16/08/17.
  */
 
-class ResumoView(context: Context, private val viewRoot: ViewGroup) {
+class ResumoView(context: Context,
+                 private val view: View,
+                 transacoes: MutableList<Transacao>) {
 
-    val corReceita = ContextCompat.getColor(context, R.color.receita)
-    val corDespesa = ContextCompat.getColor(context, R.color.despesa)
+    private val resumo = Resumo(transacoes)
+    private val corReceita = ContextCompat.getColor(context, R.color.receita)
+    private val corDespesa = ContextCompat.getColor(context, R.color.despesa)
 
-    fun atualiza(resumo: Resumo) {
-        with(viewRoot) {
-            adicionaReceita(resumo, resumo_card_receita)
-            adicionaDespesa(resumo, resumo_card_despesa)
-            adicionaTotal(resumo, resumo_card_total)
-        }
+    fun atualiza() {
+        adicionaReceita()
+        adicionaDespesa()
+        adicionaTotal()
     }
 
-    private fun adicionaTotal(resumo: Resumo, total: TextView) {
+    private fun adicionaTotal() {
         val valorTotal = resumo.total
-        with(total) {
+        with(view.resumo_card_total) {
             text = valorTotal.formataParaBrasileiro()
-            setTextColor(devolveCorPor(valorTotal))
+            setTextColor(corPor(valorTotal))
         }
     }
 
-    private fun adicionaDespesa(resumo: Resumo, despesa: TextView) {
-        with(despesa) {
-            text = resumo.despesa.formataParaBrasileiro()
+    private fun adicionaDespesa() {
+        val totalDespesa = resumo.despesa
+        with(view.resumo_card_despesa) {
+            text = totalDespesa.formataParaBrasileiro()
             setTextColor(corDespesa)
         }
     }
 
-    private fun adicionaReceita(resumo: Resumo, receita: TextView) {
-        with(receita) {
-            text = resumo.receita.formataParaBrasileiro()
+    private fun adicionaReceita() {
+        val totalReceita = resumo.receita
+        with(view.resumo_card_receita) {
+            text = totalReceita.formataParaBrasileiro()
             setTextColor(corReceita)
         }
     }
 
-    private fun devolveCorPor(total: BigDecimal): Int {
-        return if (total >= BigDecimal.ZERO) {
-            corReceita
-        } else {
-            corDespesa
+    private fun corPor(total: BigDecimal): Int {
+        if (total >= BigDecimal.ZERO) {
+            return corReceita
         }
+        return corDespesa
     }
 }
