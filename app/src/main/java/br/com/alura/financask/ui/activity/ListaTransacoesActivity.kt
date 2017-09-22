@@ -14,7 +14,7 @@ import br.com.alura.financask.model.Tipo.DESPESA
 import br.com.alura.financask.model.Tipo.RECEITA
 import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.ui.ResumoView
-import br.com.alura.financask.ui.adapter.ListaTransacaoAdapter
+import br.com.alura.financask.ui.adapter.ListaTransacoesAdapter
 import br.com.alura.financask.ui.dialog.AdicionaTransacaoDialog
 import br.com.alura.financask.ui.dialog.AlteraTransacaoDialog
 import com.github.clans.fab.FloatingActionButton
@@ -25,7 +25,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     private lateinit var transacoes: List<Transacao>
     private lateinit var view: View
     private lateinit var resumoView: ResumoView
-    private lateinit var adapter: ListaTransacaoAdapter
+    private lateinit var adapter: ListaTransacoesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +85,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun configuraAdapter() {
-        adapter = ListaTransacaoAdapter(this, transacoes)
+        adapter = ListaTransacoesAdapter(this, transacoes)
         lista_transacoes_listview.adapter = adapter
         atualizaResumo()
     }
