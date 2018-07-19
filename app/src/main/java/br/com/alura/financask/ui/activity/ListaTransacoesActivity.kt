@@ -27,6 +27,17 @@ class ListaTransacoesActivity : AppCompatActivity() {
     private lateinit var resumoView: ResumoView
     private lateinit var adapter: ListaTransacoesAdapter
 
+    /**
+     * override - é similar ao Java. No kotlin exige usarmos quando há uma sobreescrita de um método.
+     * fun - por usar de ambos paradigmas (POO e funcional), usa-se funções (fun)
+     * Quando não for definido nenhum retorno, por padrão é retornado um Unit
+     * Unit é similar ao Void no Java
+     * Nos parâmetros, utiliza-se notação Pascal
+     */
+    /**
+     * De forma resumida, sempre que for declarar parâmetros em construtores ou funções ou retorno de funções,
+     * será necessário enviar o tipo de forma explícita.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
@@ -38,6 +49,11 @@ class ListaTransacoesActivity : AppCompatActivity() {
         configuraFabMenu()
     }
 
+    /**
+     * synthetic nos permite a partir de algum layout, acessar os componentes que estão dentro desse layout.
+     * o synthetic é liberado a partir do uso do plugin kotlin android extensions.
+     * Por isso, a necessidade de adicionar esse plugin no build.gradle
+     */
     private fun configuraFabMenu() {
         lista_transacoes_adiciona_menu.setClosedOnTouchOutside(true)
         configuraFab(RECEITA, lista_transacoes_adiciona_receita)
@@ -70,6 +86,16 @@ class ListaTransacoesActivity : AppCompatActivity() {
                 }
     }
 
+    /**
+     * Declarações de variáveis
+     * var indica que essa variável é mutável, ou seja, que pode mudar de valor.
+     * val indica que essa variável não é mutável, ou seja, não muda seus valores após inicialização.
+     * Inicialização - caso seja inicializado explicitamente, o kotlin, não nos obriga a colocar um tipo na criação da variável
+     * Ex: var lista = listOf("sbc", "str")       -- O kotlin entende que essa é uma lista de strings
+     *
+     * No momento de declaração de variáveis, é preciso estar consciente acerca da possibilidade de mudança. Se não queremos mudar
+     * a variável, protegeremos com val e deixaremos o código íntegro. Caso contrário, usaremos var.
+     */
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
         val position = menuInfo.position
@@ -84,6 +110,12 @@ class ListaTransacoesActivity : AppCompatActivity() {
         configuraAdapter()
     }
 
+    /**
+     * Com kotlin, não há mais necessidade no momento de instanciar um objeto, utilizar a palavra reserva 'new'
+     * Por exemplo:
+     * Em Java:  new ArrayAdapter();
+     * Em Kotlin: ArrayAdapter()
+     */
     private fun configuraAdapter() {
         adapter = ListaTransacoesAdapter(this, transacoes)
         lista_transacoes_listview.adapter = adapter
